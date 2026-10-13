@@ -209,4 +209,81 @@ class RegistrationServiceTest {
         assertEquals(0, student.getTotalCredits());
         assertEquals(30, course.getCurrentEnrollment());
     }
+
+    
+    @Test
+    void shouldAllowFifthCourseRegistration() {
+
+        Student student = new Student("S104", "Arun");
+        RegistrationService service = new RegistrationService();
+
+        for (int i = 1; i <= 4; i++) {
+            Course course = new Course(
+                    "CS" + (300 + i),
+                    "Course " + i,
+                    4,
+                    30,
+                    true,
+                    null
+            );
+
+            assertTrue(service.register(student, course));
+        }
+
+        Course fifthCourse = new Course(
+                "CS305",
+                "Course 5",
+                4,
+                30,
+                true,
+                null
+        );
+
+        assertTrue(service.register(student, fifthCourse));
+        assertEquals(5, student.getRegisteredCourses().size());
+        assertEquals(20, student.getTotalCredits());
+        assertEquals(1, fifthCourse.getCurrentEnrollment());
+    }
+
+    @Test
+    void shouldRejectSixthCourseWithoutChangingState() {
+
+        Student student = new Student("S105", "Meera");
+        RegistrationService service = new RegistrationService();
+
+        for (int i = 1; i <= 5; i++) {
+            Course course = new Course(
+                    "CS" + (400 + i),
+                    "Course " + i,
+                    2,
+                    30,
+                    true,
+                    null
+            );
+
+            assertTrue(service.register(student, course));
+        }
+
+        Course sixthCourse = new Course(
+                "CS406",
+                "Course 6",
+                2,
+                30,
+                true,
+                null
+        );
+
+        int creditsBefore = student.getTotalCredits();
+        int coursesBefore = student.getRegisteredCourses().size();
+        int enrollmentBefore = sixthCourse.getCurrentEnrollment();
+
+        boolean result = service.register(student, sixthCourse);
+
+        assertFalse(result);
+        assertEquals(coursesBefore, student.getRegisteredCourses().size());
+        assertEquals(creditsBefore, student.getTotalCredits());
+        assertFalse(student.isRegistered("CS406"));
+        assertEquals(enrollmentBefore, sixthCourse.getCurrentEnrollment());
+    }
+
 }
