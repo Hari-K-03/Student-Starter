@@ -8,28 +8,43 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.university</groupId>
-    <artifactId>course-registration</artifactId>
+    <artifactId>course-registration-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.11.0</junit.version>
     </properties>
 
-    <dependencies>
+    <modules>
+        <module>course-registration-app</module>
+    </modules>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.11.0</version>
-            <scope>test</scope>
-        </dependency>
+    
+    <dependencyManagement>
+    	<dependencies>
+        	<dependency>
+            		<groupId>org.junit.jupiter</groupId>
+            		<artifactId>junit-jupiter</artifactId>
+            		<version>${junit.version}</version>
+            		<scope>test</scope>
+	        </dependency>
+    	</dependencies>
+    </dependencyManagement>
 
-    </dependencies>
 
     <build>
         <plugins>
+		
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>3.13.0</version>
+	    </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
