@@ -3,18 +3,23 @@ package com.university;
 public class RegistrationService {
 
     private static final int MAX_CREDITS = 20;
+    private static final int MAX_COURSES=5;
 
     public boolean register(Student student, Course course) {
+        
 
         if (!course.isActive()) {
             return false;
         }
 
-        if (course.getCurrentEnrollment() > course.getCapacity()) {
+        if (course.getCurrentEnrollment() >= course.getCapacity()) {
             return false;
         }
 
         if (student.isRegistered(course.getCourseCode())) {
+            return false;
+        }
+        if (student.getRegisteredCourses().size()>=MAX_COURSES){
             return false;
         }
 
